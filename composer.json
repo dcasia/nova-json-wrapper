@@ -1,5 +1,5 @@
 {
-    "name": "digital-creative/json-wrapper",
+    "name": "digital-creative/nova-json-wrapper",
     "description": "Allows you to group Nova fields and merge their output into a single JSON column.",
     "authors": [
         {
