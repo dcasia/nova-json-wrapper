@@ -1,0 +1,36 @@
+{
+    "name": "digital-creative/json-wrapper",
+    "description": "Allows you to group Nova fields and merge their output into a single JSON column.",
+    "authors": [
+        {
+            "name": "Rafael Milewski"
+        }
+    ],
+    "keywords": [
+        "laravel",
+        "nova",
+        "json-wrapper",
+        "json"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=7.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "DigitalCreative\\JsonWrapper\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "DigitalCreative\\JsonWrapper\\JsonWrapperServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
