@@ -95,7 +95,15 @@ class JsonWrapper extends Field
     public function fill(NovaRequest $request, $model)
     {
 
-        $clone = $model->newInstance();
+        $clone = $model->replicate();
+
+        if ($model->exists) {
+
+            $clone->setRawAttributes(
+                json_decode($model->getOriginal($this->attribute), true)
+            );
+
+        }
 
         /**
          * @var Field $field
@@ -106,7 +114,7 @@ class JsonWrapper extends Field
 
         }
 
-        $request->offsetSet($this->attribute, $clone->toArray());
+        $model->setAttribute($this->attribute, $clone->toArray());
 
         return parent::fill($request, $model);
 
