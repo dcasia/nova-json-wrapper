@@ -3,6 +3,7 @@
 namespace DigitalCreative\JsonWrapper;
 
 use Illuminate\Support\Collection;
+use Laravel\Nova\Fields\FieldCollection;
 use Laravel\Nova\Http\Controllers\ResourceShowController;
 use Laravel\Nova\Http\Controllers\ResourceStoreController;
 use Laravel\Nova\Http\Controllers\ResourceUpdateController;
@@ -47,7 +48,7 @@ trait HasJsonWrapper
         /**
          * For better compatibility just remove itself from everything else that this field is not really needed
          */
-        return collect(parent::availableFields($request))->filter(function ($value) {
+        return (new FieldCollection(parent::availableFields($request)))->filter(function ($value) {
             return !($value instanceof JsonWrapper);
         });
 
