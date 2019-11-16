@@ -4,9 +4,11 @@ namespace DigitalCreative\JsonWrapper;
 
 use Illuminate\Support\Collection;
 use Laravel\Nova\Fields\FieldCollection;
+use Laravel\Nova\Http\Controllers\CreationFieldController;
 use Laravel\Nova\Http\Controllers\ResourceShowController;
 use Laravel\Nova\Http\Controllers\ResourceStoreController;
 use Laravel\Nova\Http\Controllers\ResourceUpdateController;
+use Laravel\Nova\Http\Controllers\UpdateFieldController;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 trait HasJsonWrapper
@@ -16,6 +18,7 @@ trait HasJsonWrapper
      * Get the panels that are available for the given detail request.
      *
      * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return \Illuminate\Support\Collection
      */
     public function availablePanelsForDetail($request)
@@ -33,7 +36,9 @@ trait HasJsonWrapper
         $controller = $request->route()->controller;
 
         if ($controller instanceof ResourceStoreController ||
-            $controller instanceof ResourceUpdateController) {
+            $controller instanceof ResourceUpdateController ||
+            $controller instanceof CreationFieldController ||
+            $controller instanceof UpdateFieldController) {
 
             return parent::availableFields($request);
 
@@ -48,7 +53,7 @@ trait HasJsonWrapper
         /**
          * For better compatibility just remove itself from everything else that this field is not really needed
          */
-        return (new FieldCollection(parent::availableFields($request)))->filter(function ($value) {
+        return parent::availableFields($request)->filter(function ($value) {
             return !($value instanceof JsonWrapper);
         });
 

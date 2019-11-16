@@ -96,11 +96,14 @@ class JsonWrapper extends Field
     {
 
         $clone = $model->replicate();
+        $callbacks = [];
 
         if ($model->exists) {
 
+            $originalValues = json_decode($model->getOriginal($this->attribute), true) ?? [];
+
             $clone->setRawAttributes(
-                json_decode($model->getOriginal($this->attribute), true)
+                collect($originalValues)->only($this->fields->map->attribute->filter())->toArray()
             );
 
         }
@@ -110,13 +113,27 @@ class JsonWrapper extends Field
          */
         foreach ($this->fields as $field) {
 
-            $field->fill($request, $clone);
+            $callbacks[] = $field->fill($request, $clone);
 
         }
 
         $model->setAttribute($this->attribute, $clone->toArray());
 
-        return parent::fill($request, $model);
+        $callbacks[] = parent::fill($request, $model);
+
+        return function () use ($callbacks) {
+
+            foreach ($callbacks as $callback) {
+
+                if (is_callable($callback)) {
+
+                    call_user_func($callback);
+
+                }
+
+            }
+
+        };
 
     }
 
