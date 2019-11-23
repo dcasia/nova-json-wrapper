@@ -2,6 +2,7 @@
 
 namespace DigitalCreative\JsonWrapper;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -89,7 +90,7 @@ class JsonWrapper extends Field
      * Hydrate the given attribute on the model based on the incoming request.
      *
      * @param NovaRequest $request
-     * @param object $model
+     * @param Model $model
      * @return mixed
      */
     public function fill(NovaRequest $request, $model)
@@ -108,10 +109,27 @@ class JsonWrapper extends Field
 
         }
 
+        foreach ($this->fields->whereInstanceOf(JsonWrapper::class) as $field) {
+
+            $subClone = $clone->newInstance();
+            $callbacks[] = $field->fill($request, $subClone);
+
+            foreach ($subClone->toArray() as $key => $data) {
+
+                $clone->setAttribute($key, $data);
+
+            }
+
+        }
+
+        $nonJsonWrapperFields = $this->fields->reject(function ($field) {
+            return $field instanceof JsonWrapper;
+        });
+
         /**
          * @var Field $field
          */
-        foreach ($this->fields as $field) {
+        foreach ($nonJsonWrapperFields as $field) {
 
             $callbacks[] = $field->fill($request, $clone);
 

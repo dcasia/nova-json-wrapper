@@ -70,7 +70,7 @@ and saves to the `options` column on the database.
 
 ## Notes
 
-There are no visual indications that the field is wrapped within a json, it's intentional. It was designed to work 
+There are no visual indications that the field is wrapped within a json, this is intentional. It was designed to work 
 in condition with [Conditional Container](https://github.com/dcasia/conditional-container) allowing to seamlessly
 create complex data structure and having it all saved in a single json column into your database, here is an full example:
 
