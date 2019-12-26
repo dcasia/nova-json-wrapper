@@ -31,8 +31,8 @@ Then create a `JsonWrapper` field within your nova resource and use the `HasJson
 
 ```php
 
-use DigitalCreative/JsonWrapper/JsonWrapper;
-use DigitalCreative/JsonWrapper/HasJsonWrapper;
+use DigitalCreative\JsonWrapper\JsonWrapper;
+use DigitalCreative\JsonWrapper\HasJsonWrapper;
 
 class User extends Resource
 {
@@ -42,17 +42,17 @@ class User extends Resource
     {
         //...
         JsonWrapper::make('options', [
-        
+
             Text::make('First Name')->rules('required'),
             Text::make('Last Name')->rules('required'),
-        
+
             JsonWrapper::make('body_mass', [
-        
+
                 Text::make('Weight')->rules('required'),
                 Text::make('Height')->rules('required'),
-               
+
             ])
-        
+
         ])
     }
 
@@ -70,7 +70,7 @@ and saves to the `options` column on the database.
 
 ## Notes
 
-There are no visual indications that the field is wrapped within a json, this is intentional. It was designed to work 
+There are no visual indications that the field is wrapped within a json, this is intentional. It was designed to work
 in condition with [Conditional Container](https://github.com/dcasia/conditional-container) allowing to seamlessly
 create complex data structure and having it all saved in a single json column into your database, here is an full example:
 
@@ -82,26 +82,26 @@ public function fields(Request $request)
               1, 2, 3, 4, 5
           ])
           ->rules('required'),
-    
+
     ConditionalContainer::make([
-    
+
         JsonWrapper::make('data', [
-    
+
             Text::make('First Name')->rules('required'),
             Text::make('Last Name')->rules('required'),
-    
+
             Select::make('Gender')
                   ->options([
                       'male' => 'Male',
                       'female' => 'Female'
                   ])
                   ->rules('required'),
-    
+
             ConditionalContainer::make([ JsonWrapper::make('extra', [ ... ]) ])->if('gender === male'),
             ConditionalContainer::make([ JsonWrapper::make('extra', [ ... ]) ])->if('gender === female'),
-    
+
         ])
-    
+
     ])->if('type >= 2'),
 }
 ```
