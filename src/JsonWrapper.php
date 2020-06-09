@@ -135,7 +135,7 @@ class JsonWrapper extends Field
 
         }
 
-        $model->setAttribute($this->attribute, $clone->toArray());
+        $model->setAttribute($this->attribute, $clone->attributesToArray());
 
         $callbacks[] = parent::fill($request, $model);
 
