@@ -1,27 +1,19 @@
 <template>
-
     <div>
-
-        <div v-for="(childField, index) in field.fields" :key="index">
-
-            <component
-                    :is="'form-' + childField.component"
-                    :resource-name="resourceName"
-                    :resource-id="resourceId"
-                    :field="childField"
-                    :errors="errors"
-                    :related-resource-name="relatedResourceName"
-                    :related-resource-id="relatedResourceId"
-                    :via-resource="viaResource"
-                    :via-resource-id="viaResourceId"
-                    :via-relationship="viaRelationship"
-                    :show-help-text="childField.helpText != null"
-            />
-
-        </div>
-
+        <component v-for="(childField, index) in field.fields" :key="index"
+                :is="'form-' + childField.component"
+                :resource-name="resourceName"
+                :resource-id="resourceId"
+                :field="childField"
+                :errors="errors"
+                :related-resource-name="relatedResourceName"
+                :related-resource-id="relatedResourceId"
+                :via-resource="viaResource"
+                :via-resource-id="viaResourceId"
+                :via-relationship="viaRelationship"
+                :show-help-text="childField.helpText != null"
+        />
     </div>
-
 </template>
 
 <script>
